@@ -76,7 +76,7 @@ public class ServiceClient {
     public static String callService(HttpServletRequest req, KeycloakSecurityContext session, String action) throws Failure {
         CloseableHttpClient client = null;
         try {
-        	client = createHttpClient();
+            client = createHttpClient();
             HttpGet get = new HttpGet(getServiceUrl(req) + "/" + action);
             if (session != null) {
                 get.addHeader("Authorization", "Bearer " + session.getTokenString());

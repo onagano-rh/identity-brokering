@@ -16,7 +16,7 @@
 -->
 
 <%@page contentType="text/html" pageEncoding="ISO-8859-1"%>
-<%@ taglib prefix="c" 
+<%@ taglib prefix="c"
            uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
@@ -29,13 +29,13 @@
     <body style="display: block">
         <jsp:useBean id="controller" class="org.keycloak.quickstart.appjee.Controller" scope="request"/>
         <% controller.handleLogout(request); %>
-        
+
         <c:set var="isLoggedIn" value="<%=controller.isLoggedIn(request)%>"/>
-        
+
         <c:if test="${isLoggedIn}">
             <c:set var="accountUri" value="<%=controller.getAccountUri(request)%>"/>
         </c:if>
-        
+
         <div class="wrapper">
             <c:if test="${!isLoggedIn}">
                 <div id="not-authenticated" style="display: block" class="menu">
