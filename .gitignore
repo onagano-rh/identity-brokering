@@ -29,3 +29,7 @@ standalone.svc/log/
 standalone.svc/tmp/
 
 service-jee-jaxrs/target/
+
+**/.classpath
+**/.project
+**/.settings/

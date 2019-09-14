@@ -287,7 +287,7 @@ idprealmのログイン画面へと遷移してそこでidprealmのユーザで�
 idbrealmに戻って来ることができるようになる。
 
 ただし、app-jee-jspがservice-jee-jaxrsのREST呼び出しを成功させることはまだできない。
-なぜなら、そのREST呼び出しのリクエストには何もトークンを付けていないからである。
+なぜなら、そのREST呼び出しのリクエストに正しいトークンを付けていないからである。
 
 
 # app-jee-jspの改修
@@ -301,6 +301,10 @@ service-jee-jaxrsはidprealmの管理下であるため、
 idprealmのトークンは、"Store Tokens"の設定によりidbrealmにも保存されている。
 よってservice-jee-jaxrsへのアクセスにはその保存されたトークンを使うようにapp-jee-jspを改修する。
 
+
+
+./app-jee-jsp/src/main/java/org/keycloak/quickstart/appjee/ServiceClient.java
+./app-jee-jsp/src/main/java/org/keycloak/quickstart/appjee/IdpTokenUtil.java
 
 
 
