@@ -75,11 +75,14 @@ public class ServiceClient {
 
     public static String callService(HttpServletRequest req, KeycloakSecurityContext session, String action) throws Failure {
         CloseableHttpClient client = null;
+        String idbAccessToken = null;
         try {
             client = createHttpClient();
             HttpGet get = new HttpGet(getServiceUrl(req) + "/" + action);
             if (session != null) {
-                get.addHeader("Authorization", "Bearer " + session.getTokenString());
+                idbAccessToken = session.getTokenString();
+                String idpAccessToken = IdpTokenUtil.getAccessToken(idbAccessToken);
+                get.addHeader("Authorization", "Bearer " + idpAccessToken);
             }
 
             HttpResponse response = client.execute(get);
