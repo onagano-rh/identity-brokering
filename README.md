@@ -156,6 +156,155 @@ $ svc-server &
 必要に応じて`&`を付けてバックグラウンドで起動したり、別ターミナルで起動したりすること。
 
 
+
+
+# idp-serverとservice-jee-jaxrsの設定
+
+## idp-serverの設定
+
+管理コンソール http://localhost:8380/auth/ に管理ユーザでログインし、
+レルムidprealmを作成、ロールとユーザを下記のように作成する。
+
+| 設定項目                                   | 設定値                                |
+|--------------------------------------------|---------------------------------------|
+| Add realm > Name                           | idprealm                              |
+| Roles > Add Role > Role Name               | user                                  |
+| Users > Add user > Username                | idpuser                               |
+| Users > Add user > Email                   | idpuser@example.com                   |
+| Users > Add user > First Name              | User                                  |
+| Users > Add user > Last Name               | IdP                                   |
+| idpuser > Credentials > New Password       | Password1! (Temporary: OFF)           |
+| idpuser > Role Mappings > Available Roles  | "user"をAssigned Rolesに追加          |
+| Roles > Add Role > Role Name               | admin                                 |
+| Users > Add user > Username                | idpadmin                              |
+| Users > Add user > Email                   | idpadmin@example.com                  |
+| Users > Add user > First Name              | Admin                                 |
+| Users > Add user > Last Name               | IdP                                   |
+| idpadmin > Credentials > New Password      | Password1! (Temporary: OFF)           |
+| idpadmin > Role Mappings > Available Roles | "user"と"admin"をAssigned Rolesに追加 |
+
+登録したユーザでログインできるかどうかは下記のURLで試すことができる。
+http://localhost:8380/auth/realms/idprealm/account/
+
+続いてservice-jee-jaxrsをクライアントとして登録する。
+
+| 設定項目                                   | 設定値                                             |
+|--------------------------------------------|----------------------------------------------------|
+| Clients > Create > Client ID               | service-jee-jaxrs                                  |
+| Clients > Create > Client Protocol         | openid-connect                                     |
+| Clients > Create > Root URL                | http://localhost:8480/service                      |
+| service-jee-jaxrs > Settings > Access Type | bearer-only                                        |
+| service-jee-jaxrs > Installation           | "Keycloak OIDC JSON"を選択しファイルをダウンロード |
+
+なお、生成されるパッケージ名がservice.warなため、URLのパスも/serviceになっている。
+
+## service-jee-jaxrsの設定
+
+先程ダウンロードしたkeycloak.jsonをconfigに配置し、デプロイする。
+
+```shell
+$ mv ~/Download/keycloak.json service-jee-jaxrs/config/
+$ deploy-svc
+```
+
+なお、config配下に既存のclient-import.jsonとkeycloak-example.jsonは今回は使用しない。
+
+
+
+# idb-serverとapp-jee-jspの設定
+
+## idb-serverの設定
+
+管理コンソール http://localhost:8180/auth/ に管理ユーザでログインし、
+レルムidbrealmを作成する。
+ロールとユーザはidprealmを参照するように後で設定するため、特に必要ない。
+
+| 設定項目         | 設定値   |
+|------------------|----------|
+| Add realm > Name | idbrealm |
+
+続いてapp-jee-jspをクライアントとして登録する。
+
+| 設定項目                             | 設定値                                             |
+|--------------------------------------|----------------------------------------------------|
+| Clients > Create > Client ID         | app-jee-jsp                                        |
+| Clients > Create > Client Protocol   | openid-connect                                     |
+| Clients > Create > Root URL          | http://localhost:8280/app-jsp                      |
+| app-jee-jsp > Settings > Access Type | confidential                                       |
+| app-jee-jsp > Installation           | "Keycloak OIDC JSON"を選択しファイルをダウンロード |
+
+なお、生成されるパッケージ名がapp-jsp.warなため、URLのパスも/app-jspになっている。
+
+
+## service-jee-jaxrsの設定
+
+先程ダウンロードしたkeycloak.jsonをconfigに配置し、デプロイする。
+
+```shell
+$ mv ~/Download/keycloak.json app-jee-jsp/config/
+$ deploy-app
+```
+
+なお、config配下に既存のclient-import.jsonとkeycloak-example.jsonは今回は使用しない。
+
+
+
+# idp-serverとidb-serverの連携のための設定
+
+idb-serverにidp-serverをIdentity Providerとして設定し、
+idp-serverのユーザでidb-serverにログインできるようにする。
+
+## idp-serverの設定
+
+管理コンソール http://localhost:8380/auth/ に管理ユーザでログインし、
+idprealmのクライアントとしてidb-serverを登録する。
+
+| 設定項目                                | 設定値                                                                      |
+|-----------------------------------------|-----------------------------------------------------------------------------|
+| Clients > Create > Client ID            | idb-sso-broker                                                              |
+| Clients > Create > Client Protocol      | openid-connect                                                              |
+| Clients > Create > Root URL             | http://localhost:8180/auth/realms/idbrealm/broker/idp-sso-provider/endpoint |
+| idb-sso-broker > Settings > Access Type | confidential                                                                |
+| idb-sso-broker > Credentials > Secret   | （値をコピーしておく）                                                      |
+
+## idb-serverの設定
+
+管理コンソール http://localhost:8180/auth/ に管理ユーザでログインし、
+idbrealmにidp-serverをIdentity Providerとして登録する。
+
+| 設定項目                                         | 設定値                                                                                                |
+|--------------------------------------------------|-------------------------------------------------------------------------------------------------------|
+| Identity Providers > Add provider...             | Keycloak OpenID Connect                                                                               |
+| Add identity provider > Alias                    | idp-sso-provider                                                                                      |
+| Add identity provider > Store Tokens             | ON                                                                                                    |
+| Add identity provider > Stored Tokens Readable   | ON                                                                                                    |
+| Add identity provider > Import from URL (最下部) | "http://localhost:8380/auth/realms/idprealm/.well-known/openid-configuration"を入力しImportをクリック |
+| Add identity provider > Client ID                | idb-sso-broker                                                                                        |
+| Add identity provider > Client Secret            | (idp-server側でコピーしておいた値)                                                                 |
+
+これでidbrealmのログイン画面にidp-sso-providerのリンクができて、
+idprealmのログイン画面へと遷移してそこでidprealmのユーザでログインし、
+idbrealmに戻って来ることができるようになる。
+
+ただし、app-jee-jspがservice-jee-jaxrsのREST呼び出しを成功させることはまだできない。
+なぜなら、そのREST呼び出しのリクエストには何もトークンを付けていないからである。
+
+
+# app-jee-jspの改修
+
+service-jee-jaxrsはidprealmの管理下であるため、
+そのREST呼び出しにはidprealmが発行したトークンを使わねばならない。
+
+一方、app-jee-jspはidbrealmの管理下であるので、
+このアプリケーションでログインした時に得られるトークンはidbrealmのものである。
+
+idprealmのトークンは、"Store Tokens"の設定によりidbrealmにも保存されている。
+よってservice-jee-jaxrsへのアクセスにはその保存されたトークンを使うようにapp-jee-jspを改修する。
+
+
+
+
+
 # リンク集
 
 [rhsso730]: https://access.redhat.com/jbossnetwork/restricted/softwareDetail.html?softwareId=64611&product=core.service.rhsso&version=7.3&downloadType=distributions "rh-sso-7.3.0.GA.zip"
