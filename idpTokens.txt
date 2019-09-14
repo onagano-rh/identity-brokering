@@ -1,0 +1,143 @@
+# Stored IdP tokens got from idb-server
+
+Returned from: http://localhost:8180/auth/realms/idbrealm/broker/idp-sso-provider/token
+Use https://jwt.io to decode tokens.
+
+{
+"access_token":"eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ1NGV3bnZQVE5EcW9LR0dZYkVvcTgtZzVGZzRsOGI2TVprY1Z2dm1XdjVzIn0.eyJqdGkiOiJmYWEwYTg5ZS1lMzc1LTQzMDYtYThhOC1mMDExZjYxMzQzNDgiLCJleHAiOjE1Njg0NjYwNDEsIm5iZiI6MCwiaWF0IjoxNTY4NDY1NzQxLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgzODAvYXV0aC9yZWFsbXMvaWRwcmVhbG0iLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiYzQzYzI3YzItNWEzOC00OTAyLTk0ODUtOGQ5YzAwNzU2MDQ5IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiaWRiLXNzby1icm9rZXIiLCJub25jZSI6ImIxZjEyNmEyLWYwYmUtNDU1ZC04ZGM4LTBlZTcyOTIzZjFkNyIsImF1dGhfdGltZSI6MTU2ODQ2NTc0MSwic2Vzc2lvbl9zdGF0ZSI6IjY2NzEzYTJjLTQxODgtNGEwNy05MjU2LWVmODYyNDY3YmM4YiIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cDovL2xvY2FsaG9zdDo4MTgwIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIiwidXNlciJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsIm5hbWUiOiJVc2VyIElkUCIsInByZWZlcnJlZF91c2VybmFtZSI6ImlkcHVzZXIiLCJnaXZlbl9uYW1lIjoiVXNlciIsImZhbWlseV9uYW1lIjoiSWRQIiwiZW1haWwiOiJpZHB1c2VyQGV4YW1wbGUuY29tIn0.R3zqyMwEeLpy7zwFbOP7w-piABirr39PwAWVlQ83rRy76__VRbvFt2qc_VuL1Mi9rV_Gt3Rj6QJsW2imrhIdEk1eLLwE5rBNqXnF3N-HpJf_Ag8XoMNSVaY67L6knouiBEiyyOiGe-CqM0Ma51u6PSgsi0qVS7mH5oIOm5ZC5PtqDhAsPZkye14p0pa9SQBoShDJ7PZXfeyilTq9lt6XbQXR9-Z0aeVHvBQeIg2Fl8YgB1D-z-P0OvaCWwXw5q_xARuucCVVwRoHGJwKE_ABrXN524HOK9_3zXJhPu4SNqhlwiTIq8HCaFadU1nnh7QiDL72-LW0VvVWqhkzW1JfYw",
+"expires_in":300,
+"refresh_expires_in":1800,
+"refresh_token":"eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJhZTM2YjVkYy1hNDAyLTQ1ZjYtYTc0NC1lZDI1MDU5OWFiN2UifQ.eyJqdGkiOiI4NDBjYmQ1NC0yZTRkLTQwZDQtOWY3Mi03OTIyMDMyMGM0MTYiLCJleHAiOjE1Njg0Njc1NDEsIm5iZiI6MCwiaWF0IjoxNTY4NDY1NzQxLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgzODAvYXV0aC9yZWFsbXMvaWRwcmVhbG0iLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjgzODAvYXV0aC9yZWFsbXMvaWRwcmVhbG0iLCJzdWIiOiJjNDNjMjdjMi01YTM4LTQ5MDItOTQ4NS04ZDljMDA3NTYwNDkiLCJ0eXAiOiJSZWZyZXNoIiwiYXpwIjoiaWRiLXNzby1icm9rZXIiLCJub25jZSI6ImIxZjEyNmEyLWYwYmUtNDU1ZC04ZGM4LTBlZTcyOTIzZjFkNyIsImF1dGhfdGltZSI6MCwic2Vzc2lvbl9zdGF0ZSI6IjY2NzEzYTJjLTQxODgtNGEwNy05MjU2LWVmODYyNDY3YmM4YiIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIiwidXNlciJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwifQ.K3y_WHfJMdBxLPX3XANPLm5q6yBoMwMntYw6Wy_7qjo",
+"token_type":"bearer",
+"id_token":"eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ1NGV3bnZQVE5EcW9LR0dZYkVvcTgtZzVGZzRsOGI2TVprY1Z2dm1XdjVzIn0.eyJqdGkiOiIxMTBmMzFjOS1hNzNjLTQxZjgtOWFlNy0wYjRhOGNkYWUyMzEiLCJleHAiOjE1Njg0NjYwNDEsIm5iZiI6MCwiaWF0IjoxNTY4NDY1NzQxLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgzODAvYXV0aC9yZWFsbXMvaWRwcmVhbG0iLCJhdWQiOiJpZGItc3NvLWJyb2tlciIsInN1YiI6ImM0M2MyN2MyLTVhMzgtNDkwMi05NDg1LThkOWMwMDc1NjA0OSIsInR5cCI6IklEIiwiYXpwIjoiaWRiLXNzby1icm9rZXIiLCJub25jZSI6ImIxZjEyNmEyLWYwYmUtNDU1ZC04ZGM4LTBlZTcyOTIzZjFkNyIsImF1dGhfdGltZSI6MTU2ODQ2NTc0MSwic2Vzc2lvbl9zdGF0ZSI6IjY2NzEzYTJjLTQxODgtNGEwNy05MjU2LWVmODYyNDY3YmM4YiIsImFjciI6IjEiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsIm5hbWUiOiJVc2VyIElkUCIsInByZWZlcnJlZF91c2VybmFtZSI6ImlkcHVzZXIiLCJnaXZlbl9uYW1lIjoiVXNlciIsImZhbWlseV9uYW1lIjoiSWRQIiwiZW1haWwiOiJpZHB1c2VyQGV4YW1wbGUuY29tIn0.DSumOs4vZ43xSEHswkV5NSHYV23fVqZmYvqm3V2uhKzdFdwgjPNVrm4aVERC7UDuaDtUoTRKsqTbxlD_HAG7O5X_A4__zH1a0INVewLaH5SbPtRI6t7UwZHBiY5DQ2YJ2q-HYmpJEv2hCF-2_25xU8Zgn-JgEkMT1qC_zUprbaNeW2IsS-D-aOHNWzguwE3xn6mXKoT8j-rAU53UbbZ4n5-SrJr7UrJXWJqv14ovQNWyuBUX1lM309ZPh-T1G4SlUER0oohp2N_9DXcD0FlZiJfSfHsKT0XLO3_Q_-eKMISFcbUmhHE8zpRt_2ENOsmdvNaNclycp4Sm7D5pAMt6sQ",
+"not-before-policy":0,
+"session_state":"66713a2c-4188-4a07-9256-ef862467bc8b",
+"scope":"openid profile email",
+"accessTokenExpiration":1568466041
+}
+
+## Decoded access_token
+
+{
+  "alg": "RS256",
+  "typ": "JWT",
+  "kid": "u4ewnvPTNDqoKGGYbEoq8-g5Fg4l8b6MZkcVvvmWv5s"
+}
+{
+  "jti": "faa0a89e-e375-4306-a8a8-f011f6134348",
+  "exp": 1568466041,
+  "nbf": 0,
+  "iat": 1568465741,
+  "iss": "http://localhost:8380/auth/realms/idprealm",
+  "aud": "account",
+  "sub": "c43c27c2-5a38-4902-9485-8d9c00756049",
+  "typ": "Bearer",
+  "azp": "idb-sso-broker",
+  "nonce": "b1f126a2-f0be-455d-8dc8-0ee72923f1d7",
+  "auth_time": 1568465741,
+  "session_state": "66713a2c-4188-4a07-9256-ef862467bc8b",
+  "acr": "1",
+  "allowed-origins": [
+    "http://localhost:8180"
+  ],
+  "realm_access": {
+    "roles": [
+      "offline_access",
+      "uma_authorization",
+      "user"
+    ]
+  },
+  "resource_access": {
+    "account": {
+      "roles": [
+        "manage-account",
+        "manage-account-links",
+        "view-profile"
+      ]
+    }
+  },
+  "scope": "openid profile email",
+  "email_verified": false,
+  "name": "User IdP",
+  "preferred_username": "idpuser",
+  "given_name": "User",
+  "family_name": "IdP",
+  "email": "idpuser@example.com"
+}
+{
+  (signature)
+}
+
+## Decoded refresh_token
+
+{
+  "alg": "HS256",
+  "typ": "JWT",
+  "kid": "ae36b5dc-a402-45f6-a744-ed250599ab7e"
+}
+{
+  "jti": "840cbd54-2e4d-40d4-9f72-79220320c416",
+  "exp": 1568467541,
+  "nbf": 0,
+  "iat": 1568465741,
+  "iss": "http://localhost:8380/auth/realms/idprealm",
+  "aud": "http://localhost:8380/auth/realms/idprealm",
+  "sub": "c43c27c2-5a38-4902-9485-8d9c00756049",
+  "typ": "Refresh",
+  "azp": "idb-sso-broker",
+  "nonce": "b1f126a2-f0be-455d-8dc8-0ee72923f1d7",
+  "auth_time": 0,
+  "session_state": "66713a2c-4188-4a07-9256-ef862467bc8b",
+  "realm_access": {
+    "roles": [
+      "offline_access",
+      "uma_authorization",
+      "user"
+    ]
+  },
+  "resource_access": {
+    "account": {
+      "roles": [
+        "manage-account",
+        "manage-account-links",
+        "view-profile"
+      ]
+    }
+  },
+  "scope": "openid profile email"
+}
+{
+  (signature)
+}
+
+# Decoded id_token
+
+{
+  "alg": "RS256",
+  "typ": "JWT",
+  "kid": "u4ewnvPTNDqoKGGYbEoq8-g5Fg4l8b6MZkcVvvmWv5s"
+}
+{
+  "jti": "110f31c9-a73c-41f8-9ae7-0b4a8cdae231",
+  "exp": 1568466041,
+  "nbf": 0,
+  "iat": 1568465741,
+  "iss": "http://localhost:8380/auth/realms/idprealm",
+  "aud": "idb-sso-broker",
+  "sub": "c43c27c2-5a38-4902-9485-8d9c00756049",
+  "typ": "ID",
+  "azp": "idb-sso-broker",
+  "nonce": "b1f126a2-f0be-455d-8dc8-0ee72923f1d7",
+  "auth_time": 1568465741,
+  "session_state": "66713a2c-4188-4a07-9256-ef862467bc8b",
+  "acr": "1",
+  "email_verified": false,
+  "name": "User IdP",
+  "preferred_username": "idpuser",
+  "given_name": "User",
+  "family_name": "IdP",
+  "email": "idpuser@example.com"
+}
+{
+  (signature)
+}
