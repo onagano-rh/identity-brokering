@@ -50,7 +50,7 @@ EAPのサーバーに対してはRH-SSOが用意したCLIファイルによる�
 これによりstandalone.xmlにkeycloakサブシステムが追加され、
 Java EE標準のFORM認証やBASIC認証だけでなくKEYCLOAK認証という種類が選択・使用可能になる。
 
-### standalone.idb
+### idb-server
 
 ```shell
 $ idb-server
@@ -63,7 +63,7 @@ $ idb-server
 | idbの管理ユーザ             | admin                       |
 | idbの管理ユーザのパスワード | RedHat1!                    |
 
-### standalone.idp
+### idp-server
 
 ```shell
 $ idp-server
@@ -77,7 +77,7 @@ $ idp-server
 ※RH-SSOの管理コンソールには同一ブラウザからは複数同時にログインできないので、
 可能であれば別のブラウザからアクセスするといい。
 
-### standalone.app
+### app-server
 
 ```shell
 $ app-server &
@@ -85,7 +85,7 @@ $ app-cli --file=$EAP_HOME/bin/adapter-install.cli
 $ app-cli :reload
 ```
 
-### standalone.svc
+### svc-server
 
 ```shell
 $ svc-server &
@@ -108,10 +108,34 @@ Red HatのMavenリポジトリやRH-SSOのBOMの設定が行われ、
 
 ```shell
 $ deploy-app
-(app-jee-jspをビルドしapp-jsp.warを生成、standalone.appにデプロイする)
+(app-jee-jspをビルドしapp-jsp.warを生成、app-serverにデプロイする)
 $ deploy-svc
-(service-jee-jaxrsをビルドしservice.warを生成、standalone.svcにデプロイする)
+(service-jee-jaxrsをビルドしservice.warを生成、svc-serverにデプロイする)
 ```
+
+### 各アプリケーションの説明
+
+service-jee-jaxrsは以下のエンドポイントで簡単なRESTサービスを公開している。
+
+http://localhost:8480/service/public
+http://localhost:8480/service/secured
+http://localhost:8480/service/admin
+
+ただしsecuredとadminはアクセス制限がかけられており、
+それぞれuserロールおよびadminロールがないとアクセスできない。
+
+app-jee-jspは以下のURLで、上記3つのエンドポイントを呼び出すためのUI画面を公開している。
+
+http://localhost:8280/app-jsp/index.jsp
+
+呼び出し先のサーバーは、下記のクラスで
+システムプロパティ`servcie.url`（または環境変数`SERVICE_URL`）を参照するようになっている。
+
+./app-jee-jsp/src/main/java/org/keycloak/quickstart/appjee/ServiceLocator.java
+
+app-serverの起動時の引数でそのシステムプロパティを設定している。
+認証や連携の設定を何もしていない状態では、publicの呼び出しのみが成功する。
+
 
 ## 各サーバーの再起動
 

@@ -28,6 +28,7 @@ function app-server() {
               -Djboss.server.base.dir=./standalone.app \
               -b 0.0.0.0 \
               -Djboss.socket.binding.port-offset=200 \
+              -Dservice.url=http://localhost:8480/service \
               $@
 }
 
@@ -85,6 +86,6 @@ function deploy-svc() {
     (
         cd service-jee-jaxrs
         mvn -Denforcer.skip=true clean package
-        cp target/service.war ../standalone.app/deployments/
+        cp target/service.war ../standalone.svc/deployments/
     )
 }
