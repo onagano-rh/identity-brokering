@@ -12,6 +12,7 @@ standalone.app/deployments/
 standalone.app/log/
 standalone.app/tmp/
 
+app-jee-jsp/config/keycloak.json
 app-jee-jsp/target/
 
 standalone.idp/configuration/logging.properties
@@ -28,6 +29,7 @@ standalone.svc/deployments/
 standalone.svc/log/
 standalone.svc/tmp/
 
+service-jee-jaxrs/config/keycloak.json
 service-jee-jaxrs/target/
 
 **/.classpath
