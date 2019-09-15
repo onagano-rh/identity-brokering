@@ -4,6 +4,23 @@
 
 # 環境構築
 
+__注意__
+
+マスターブランチのstandalone.*やアプリケーションのプロジェクトはすでに
+本手順を最後まで行ったものになっているので、重複して設定や変更を行う必要はないが、
+RH-SSOに対する設定やアプリケーションに配置するkeycloak.jsonの取得は
+各自が行う必要がある。
+
+製品インストール直後の初期状態から本手順を適用して全てを再構築する場合は、
+以下の手順で初期状態をチェックアウトして始めるといい。
+
+```shell
+$ git clone identity-brokering another-identity-brokering
+$ cd another-identity-brokering
+$ git checkout -b mybranch 00_out-of-the-box
+```
+
+
 ## RH-SSOのインストール
 
 [RH-SSO 7.3.0][rhsso730]をダウンロードし、任意の場所に展開する。
