@@ -1,7 +1,6 @@
 # 構成図
 
-TODO
-
+![構成図](./identity-brokering.png)
 
 # 環境構築
 
@@ -179,7 +178,7 @@ app-jee-jspは以下のURLで、上記3つのエンドポイントを呼び出�
 呼び出し先のサーバーは、下記のクラスで
 システムプロパティ`servcie.url`（または環境変数`SERVICE_URL`）を参照するようになっている。
 
-- ./app-jee-jsp/src/main/java/org/keycloak/quickstart/appjee/ServiceLocator.java
+- [./app-jee-jsp/src/main/java/org/keycloak/quickstart/appjee/ServiceLocator.java](./app-jee-jsp/src/main/java/org/keycloak/quickstart/appjee/ServiceLocator.java)
 
 app-serverの起動時の引数でそのシステムプロパティを設定している。
 認証や連携の設定を何もしていない状態では、publicの呼び出しのみが成功する。
@@ -374,8 +373,8 @@ idprealmのトークンは、"Store Tokens"の設定によりidbrealmにも保�
 そこのアクセストークンを設定する箇所を変更する。
 具体的な処理は全て`TdpTokenUtil`に含めてある。
 
-- ./app-jee-jsp/src/main/java/org/keycloak/quickstart/appjee/ServiceClient.java
-- ./app-jee-jsp/src/main/java/org/keycloak/quickstart/appjee/IdpTokenUtil.java
+- [./app-jee-jsp/src/main/java/org/keycloak/quickstart/appjee/ServiceClient.java](./app-jee-jsp/src/main/java/org/keycloak/quickstart/appjee/ServiceClient.java)
+- [./app-jee-jsp/src/main/java/org/keycloak/quickstart/appjee/IdpTokenUtil.java](./app-jee-jsp/src/main/java/org/keycloak/quickstart/appjee/IdpTokenUtil.java)
 
 `IdpTokenUtil`では、idp-serverへのアクセストークンの無い初回アクセス時に、
 まずidb-serverへアクセスして"Store Tokens"により保存されたトークンを取得する。
