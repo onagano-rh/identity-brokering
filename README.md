@@ -99,6 +99,48 @@ $ svc-cli --file=$EAP_HOME/bin/adapter-install.cli
 $ svc-cli :reload
 ```
 
+## デバッグ用のサーバーの設定
+
+### HTTPアクセスログの有効化
+
+[EAP 7でアクセスログを有効化するナレッジベース][accesslog]を参考に、各サーバに設定する。
+
+```shell
+idb-cli '/subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=record-request-start-time,value=true)'
+idb-cli '/subsystem=undertow/server=default-server/host=default-host/setting=access-log:add(pattern="%h %l %u %t \"%r\" %s %b \"%{i,Referer}\" \"%{i,User-Agent}\" Cookie: \"%{i,COOKIE}\" Set-Cookie: \"%{o,SET-COOKIE}\" SessionID: %S Thread: \"%I\" TimeTaken: %T")'
+
+app-cli '/subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=record-request-start-time,value=true)'
+app-cli '/subsystem=undertow/server=default-server/host=default-host/setting=access-log:add(pattern="%h %l %u %t \"%r\" %s %b \"%{i,Referer}\" \"%{i,User-Agent}\" Cookie: \"%{i,COOKIE}\" Set-Cookie: \"%{o,SET-COOKIE}\" SessionID: %S Thread: \"%I\" TimeTaken: %T")'
+
+idp-cli '/subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=record-request-start-time,value=true)'
+idp-cli '/subsystem=undertow/server=default-server/host=default-host/setting=access-log:add(pattern="%h %l %u %t \"%r\" %s %b \"%{i,Referer}\" \"%{i,User-Agent}\" Cookie: \"%{i,COOKIE}\" Set-Cookie: \"%{o,SET-COOKIE}\" SessionID: %S Thread: \"%I\" TimeTaken: %T")'
+
+svc-cli '/subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=record-request-start-time,value=true)'
+svc-cli '/subsystem=undertow/server=default-server/host=default-host/setting=access-log:add(pattern="%h %l %u %t \"%r\" %s %b \"%{i,Referer}\" \"%{i,User-Agent}\" Cookie: \"%{i,COOKIE}\" Set-Cookie: \"%{o,SET-COOKIE}\" SessionID: %S Thread: \"%I\" TimeTaken: %T")'
+```
+
+### Reauest Dumperの有効化
+
+全てのリクエストとレスポンスのヘッダーをサーバーログに出力するよう設定する
+（[参考ナレッジベース][requestdumper]）。
+POSTリクエストの場合はボディの内容も出力される。
+出力量は多くなるので注意を要する。
+
+```shell
+idb-cli '/subsystem=undertow/configuration=filter/expression-filter=requestDumperExpression:add(expression="dump-request")'
+idb-cli '/subsystem=undertow/server=default-server/host=default-host/filter-ref=requestDumperExpression:add'
+
+app-cli '/subsystem=undertow/configuration=filter/expression-filter=requestDumperExpression:add(expression="dump-request")'
+app-cli '/subsystem=undertow/server=default-server/host=default-host/filter-ref=requestDumperExpression:add'
+
+idp-cli '/subsystem=undertow/configuration=filter/expression-filter=requestDumperExpression:add(expression="dump-request")'
+idp-cli '/subsystem=undertow/server=default-server/host=default-host/filter-ref=requestDumperExpression:add'
+
+svc-cli '/subsystem=undertow/configuration=filter/expression-filter=requestDumperExpression:add(expression="dump-request")'
+svc-cli '/subsystem=undertow/server=default-server/host=default-host/filter-ref=requestDumperExpression:add'
+```
+
+
 ## アプリケーションのビルドとデプロイの確認
 
 [app-jee-jsp][app-jee-jsp]と[service-jee-jaxrs][service-jee-jaxrs]は
@@ -348,12 +390,6 @@ idprealmのトークンは、"Store Tokens"の設定によりidbrealmにも保�
 二つ目のRH-SSOサーバーであるidp-serverとの連携部分は自動化されていないため、
 このような実装が必要になる。
 
-
-idp-cli '/subsystem=undertow/configuration=filter/expression-filter=requestDumperExpression:add(expression="dump-request")'
-idp-cli '/subsystem=undertow/server=default-server/host=default-host/filter-ref=requestDumperExpression:add'
-
-idp-cli '/subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=record-request-start-time,value=true)'
-idp-cli '/subsystem=undertow/server=default-server/host=default-host/setting=access-log:add(pattern="%h %l %u %t \"%r\" %s %b \"%{i,Referer}\" \"%{i,User-Agent}\" Cookie: \"%{i,COOKIE}\" Set-Cookie: \"%{o,SET-COOKIE}\" SessionID: %S Thread: \"%I\" TimeTaken: %T")'
 
 
 # リンク集
