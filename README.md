@@ -328,11 +328,25 @@ service-jee-jaxrsはidprealmの管理下であるため、
 idprealmのトークンは、"Store Tokens"の設定によりidbrealmにも保存されている。
 よってservice-jee-jaxrsへのアクセスにはその保存されたトークンを使うようにapp-jee-jspを改修する。
 
-
+下記のクラスのうち、`ServiceClient`が実際のREST呼び出しを行っているので、
+そこのアクセストークンを設定する箇所を変更する。
+具体的な処理は全て`TdpTokenUtil`に含めてある。
 
 - ./app-jee-jsp/src/main/java/org/keycloak/quickstart/appjee/ServiceClient.java
 - ./app-jee-jsp/src/main/java/org/keycloak/quickstart/appjee/IdpTokenUtil.java
 
+`IdpTokenUtil`では、idp-serverへのアクセストークンの無い初回アクセス時に、
+まずidb-serverへアクセスして"Store Tokens"により保存されたトークンを取得する。
+
+そこで取得したアクセストークンが期限切れになると、2回目以降のアクセストークンは直接idp-serverから取得する。
+この時にidb-sso-brokerのクライアントシークレットが必要になる。
+
+それぞれのトークンレスポンスの例を、 https://jwt.io でデコードしたものと共にtoken-example.mdに収めた。
+
+なお、idb-serverとapp-jee-jsp間でもトークンのやりとりは行われているが、
+これはRH-SSOのアダプター内で自動化されておりユーザが意識することはない。
+二つ目のRH-SSOサーバーであるidp-serverとの連携部分は自動化されていないため、
+このような実装が必要になる。
 
 
 idp-cli '/subsystem=undertow/configuration=filter/expression-filter=requestDumperExpression:add(expression="dump-request")'
