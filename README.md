@@ -2,6 +2,41 @@
 
 ![構成図](./identity-brokering.png)
 
+
+<!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
+**Table of Contents**
+
+- [構成図](#構成図)
+- [環境構築](#環境構築)
+    - [RH-SSOのインストール](#rh-ssoのインストール)
+    - [EAPとアダプターのインストール](#eapとアダプターのインストール)
+    - [環境変数とヘルパー関数の設定](#環境変数とヘルパー関数の設定)
+    - [各サーバーの起動確認と初期設定](#各サーバーの起動確認と初期設定)
+        - [idb-server](#idb-server)
+        - [idp-server](#idp-server)
+        - [app-server](#app-server)
+        - [svc-server](#svc-server)
+    - [デバッグ用のサーバーの設定](#デバッグ用のサーバーの設定)
+        - [HTTPアクセスログの有効化](#httpアクセスログの有効化)
+        - [Reauest Dumperの有効化](#reauest-dumperの有効化)
+    - [アプリケーションのビルドとデプロイの確認](#アプリケーションのビルドとデプロイの確認)
+        - [各アプリケーションの説明](#各アプリケーションの説明)
+    - [各サーバーの再起動](#各サーバーの再起動)
+- [idp-serverとservice-jee-jaxrsの設定](#idp-serverとservice-jee-jaxrsの設定)
+    - [idp-serverの設定](#idp-serverの設定)
+    - [service-jee-jaxrsの設定](#service-jee-jaxrsの設定)
+- [idb-serverとapp-jee-jspの設定](#idb-serverとapp-jee-jspの設定)
+    - [idb-serverの設定](#idb-serverの設定)
+    - [service-jee-jaxrsの設定](#service-jee-jaxrsの設定-1)
+- [idp-serverとidb-serverの連携のための設定](#idp-serverとidb-serverの連携のための設定)
+    - [idp-serverの設定](#idp-serverの設定-1)
+    - [idb-serverの設定](#idb-serverの設定-1)
+- [app-jee-jspの改修](#app-jee-jspの改修)
+- [リンク集](#リンク集)
+
+<!-- markdown-toc end -->
+
+
 # 環境構築
 
 __注意__
@@ -81,6 +116,8 @@ $ idb-server
 
 ※`idb-server`は`helper.sh`内に登録されている関数で、以下同様。
 
+| 設定項目                    | 設定値                      |
+|-----------------------------|-----------------------------|
 | idbの管理コンソール         | http://localhost:8180/auth/ |
 | idbの管理ユーザ             | admin                       |
 | idbの管理ユーザのパスワード | RedHat1!                    |
@@ -92,6 +129,8 @@ $ idp-server
 (RH-SSOの管理コンソールにアクセスし管理ユーザを登録する)
 ```
 
+| 設定項目                    | 設定値                      |
+|-----------------------------|-----------------------------|
 | idpの管理コンソール         | http://localhost:8380/auth/ |
 | idpの管理ユーザ             | admin                       |
 | idpの管理ユーザのパスワード | RedHat1!                    |
