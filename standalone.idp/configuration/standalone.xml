@@ -550,6 +550,7 @@
                 <host name="default-host" alias="localhost">
                     <location name="/" handler="welcome-content"/>
                     <access-log pattern="%h %l %u %t &quot;%r&quot; %s %b &quot;%{i,Referer}&quot; &quot;%{i,User-Agent}&quot; Cookie: &quot;%{i,COOKIE}&quot; Set-Cookie: &quot;%{o,SET-COOKIE}&quot; SessionID: %S Thread: &quot;%I&quot; TimeTaken: %T"/>
+                    <filter-ref name="requestDumperExpression"/>
                     <http-invoker security-realm="ApplicationRealm"/>
                 </host>
             </server>
@@ -560,6 +561,9 @@
             <handlers>
                 <file name="welcome-content" path="${jboss.home.dir}/welcome-content"/>
             </handlers>
+            <filters>
+                <expression-filter name="requestDumperExpression" expression="dump-request"/>
+            </filters>
         </subsystem>
     </profile>
     <interfaces>
