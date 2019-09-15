@@ -26,6 +26,8 @@ import org.keycloak.KeycloakSecurityContext;
 import org.keycloak.util.JsonSerialization;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import java.io.InputStream;
 
 /**
@@ -81,7 +83,7 @@ public class ServiceClient {
             HttpGet get = new HttpGet(getServiceUrl(req) + "/" + action);
             if (session != null) {
                 idbAccessToken = session.getTokenString();
-                String idpAccessToken = IdpTokenUtil.getAccessToken(idbAccessToken);
+                String idpAccessToken = IdpTokenUtil.getAccessToken(idbAccessToken, req.getSession());
                 get.addHeader("Authorization", "Bearer " + idpAccessToken);
             }
 

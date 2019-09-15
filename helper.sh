@@ -1,5 +1,6 @@
-# export SSO_HOME=/path/to/rh-sso-7.3
-# export EAP_HOME=/path/to/jboss-eap-7.2
+export SSO_HOME=/home/onagano/jboss/rh-sso-7.3
+export EAP_HOME=/home/onagano/jboss/jboss-eap-7.2
+export IDB_CLIENT_SECRET=659411b0-e3ad-44c6-bdea-c1227c53b1b1
 
 JAVA_OPTS="-Xmx256m -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true"
 
@@ -29,6 +30,7 @@ function app-server() {
               -b 0.0.0.0 \
               -Djboss.socket.binding.port-offset=200 \
               -Dservice.url=http://localhost:8480/service \
+              -Didb.client.secret=${IDB_CLIENT_SECRET} \
               $@
 }
 
