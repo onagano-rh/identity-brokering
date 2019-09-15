@@ -35,3 +35,4 @@ service-jee-jaxrs/target/
 **/.classpath
 **/.project
 **/.settings/
+**/.tern-project

@@ -33,9 +33,15 @@ TODO
 各サーバーのインストレーションを指すように設定し、
 `helper.sh`を読み込ませる。
 
+また、後にidp-serverにidb-serverをクライアントとして登録するが、
+その際のクライアントシークレットを`IDB_CLIENT_SECRET`として設定しておく。
+環境を最初に構築するときはひとまずスキップして構わない。
+この環境変数はapp-serverの起動時に使用される。
+
 ```shell
 export SSO_HOME=/path/to/rh-sso-7.3
 export EAP_HOME=/path/to/jboss-eap-7.2
+export IDB_CLIENT_SECRET=659411b0-e3ad-44c6-bdea-c1227c53b1b1
 . helper.sh
 ```
 
@@ -117,21 +123,21 @@ $ deploy-svc
 
 service-jee-jaxrsは以下のエンドポイントで簡単なRESTサービスを公開している。
 
-http://localhost:8480/service/public
-http://localhost:8480/service/secured
-http://localhost:8480/service/admin
+- http://localhost:8480/service/public
+- http://localhost:8480/service/secured
+- http://localhost:8480/service/admin
 
 ただしsecuredとadminはアクセス制限がかけられており、
 それぞれuserロールおよびadminロールがないとアクセスできない。
 
 app-jee-jspは以下のURLで、上記3つのエンドポイントを呼び出すためのUI画面を公開している。
 
-http://localhost:8280/app-jsp/index.jsp
+- http://localhost:8280/app-jsp/index.jsp
 
 呼び出し先のサーバーは、下記のクラスで
 システムプロパティ`servcie.url`（または環境変数`SERVICE_URL`）を参照するようになっている。
 
-./app-jee-jsp/src/main/java/org/keycloak/quickstart/appjee/ServiceLocator.java
+- ./app-jee-jsp/src/main/java/org/keycloak/quickstart/appjee/ServiceLocator.java
 
 app-serverの起動時の引数でそのシステムプロパティを設定している。
 認証や連携の設定を何もしていない状態では、publicの呼び出しのみが成功する。
@@ -184,7 +190,8 @@ $ svc-server &
 | idpadmin > Role Mappings > Available Roles | "user"と"admin"をAssigned Rolesに追加 |
 
 登録したユーザでログインできるかどうかは下記のURLで試すことができる。
-http://localhost:8380/auth/realms/idprealm/account/
+
+- http://localhost:8380/auth/realms/idprealm/account/
 
 続いてservice-jee-jaxrsをクライアントとして登録する。
 
@@ -267,6 +274,26 @@ idprealmのクライアントとしてidb-serverを登録する。
 | idb-sso-broker > Settings > Access Type | confidential                                                                |
 | idb-sso-broker > Credentials > Secret   | （値をコピーしておく）                                                      |
 
+ここでコピーしたidb-sso-brokerのシークレットは
+app-jee-jspがトークンをリフレッシュする際に必要になるので、
+環境変数`IDB_CLIENT_SECRET`にも保存しておき、
+app-serverの起動時に引き渡す。
+
+```shell
+export IDB_CLIENT_SECRET=659411b0-e3ad-44c6-bdea-c1227c53b1b1
+(...)
+function app-server() {
+    JBOSS_HOME=${EAP_HOME} JAVA_OPTS=${JAVA_OPTS} \
+              ${EAP_HOME}/bin/standalone.sh \
+              -Djboss.server.base.dir=./standalone.app \
+              -b 0.0.0.0 \
+              -Djboss.socket.binding.port-offset=200 \
+              -Dservice.url=http://localhost:8480/service \
+              -Didb.client.secret=${IDB_CLIENT_SECRET} \
+              $@
+}
+```
+
 ## idb-serverの設定
 
 管理コンソール http://localhost:8180/auth/ に管理ユーザでログインし、
@@ -303,10 +330,16 @@ idprealmのトークンは、"Store Tokens"の設定によりidbrealmにも保�
 
 
 
-./app-jee-jsp/src/main/java/org/keycloak/quickstart/appjee/ServiceClient.java
-./app-jee-jsp/src/main/java/org/keycloak/quickstart/appjee/IdpTokenUtil.java
+- ./app-jee-jsp/src/main/java/org/keycloak/quickstart/appjee/ServiceClient.java
+- ./app-jee-jsp/src/main/java/org/keycloak/quickstart/appjee/IdpTokenUtil.java
 
 
+
+idp-cli '/subsystem=undertow/configuration=filter/expression-filter=requestDumperExpression:add(expression="dump-request")'
+idp-cli '/subsystem=undertow/server=default-server/host=default-host/filter-ref=requestDumperExpression:add'
+
+idp-cli '/subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=record-request-start-time,value=true)'
+idp-cli '/subsystem=undertow/server=default-server/host=default-host/setting=access-log:add(pattern="%h %l %u %t \"%r\" %s %b \"%{i,Referer}\" \"%{i,User-Agent}\" Cookie: \"%{i,COOKIE}\" Set-Cookie: \"%{o,SET-COOKIE}\" SessionID: %S Thread: \"%I\" TimeTaken: %T")'
 
 
 # リンク集
@@ -328,3 +361,9 @@ idprealmのトークンは、"Store Tokens"の設定によりidbrealmにも保�
 [app-jee-jsp]: https://github.com/redhat-developer/redhat-sso-quickstarts/tree/7.3.x/app-jee-jsp
 
 [service-jee-jaxrs]: https://github.com/redhat-developer/redhat-sso-quickstarts/tree/7.3.x/service-jee-jaxrs
+
+[requestdumper]: https://access.redhat.com/solutions/2429371
+
+[accesslog]: https://access.redhat.com/solutions/2423311
+
+[rhsso-api]: https://access.redhat.com/webassets/avalon/d/red-hat-single-sign-on/version-7.3/javadocs/
